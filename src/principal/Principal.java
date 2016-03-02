@@ -62,7 +62,7 @@ public class Principal extends javax.swing.JFrame {
         principalPanelLayout.setHorizontalGroup(
             principalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(principalPanelLayout.createSequentialGroup()
-                .addComponent(desktop)
+                .addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE, 1364, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         principalPanelLayout.setVerticalGroup(
