@@ -1,511 +1,805 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package integrantes;
 
-import javax.swing.JInternalFrame;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.mysql.jdbc.Blob;
+import javax.swing.JOptionPane;
+import servicios.Retorno;
+import servicios.InterfazGrafica;
 
 import diocesis.DiocesisController;
 import diocesis.DiocesisModel;
-import estadoCivil.EstadoCivilModel;
+import pais.PaisController;
+import pais.PaisModel;
+import ciudad.CiudadController;
+import ciudad.CiudadModel;
 import lumisial.LumisialController;
 import lumisial.LumisialModel;
-import pais.PaisModel;
-import servicios.InterfazGrafica;
-import servicios.Retorno;
+import integrantes.IntegrantesController;
+import integrantes.IntegrantesModel;
+import java.awt.Component;
 
-import com.jgoodies.forms.factories.FormFactory;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
 import javax.swing.JCheckBox;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.JTextPane;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.border.TitledBorder;
-import java.awt.Color;
-import javax.swing.UIManager;
+
 import javax.swing.DefaultComboBoxModel;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.awt.event.ActionEvent;
-import javax.swing.JTextArea;
-import com.toedter.calendar.JDateChooser;
 
-public class IntegrantesView extends JInternalFrame {
-	private JTextField txtSegundoApe;
-	private JTextField txtPrimerNom;
-	private JTextField txtSegunNom;
-	private JTextField txtPrimerApe;
-	private JTextField txtOcupacion;
-	private JTextField txtIdentidad;
-	private JTextField txtNumCarnet;
-	private JTextField txtCelular;
-	
-	IntegrantesController objIntegrantesController = new IntegrantesController();
+/**
+ *
+ * @author jhon
+ */
+public class IntegrantesView extends javax.swing.JInternalFrame {
 
-	/**
-	 * Create the frame.
-	 */
-	public IntegrantesView() {
-		getContentPane().setBackground(Color.LIGHT_GRAY);
-		setClosable(true);
-		setTitle("REGISTRO DE INTEGRANTES");
-		setBounds(100, 100, 1289, 596);
-		getContentPane().setLayout(null);
+    IntegrantesController objIntegrantesController = new IntegrantesController();
+    LumisialController objLumisialController = new LumisialController();
+    
+    boolean recargarCombo;
+    
+    /**
+     * Creates new form IntegrantesView2
+     */
+    public IntegrantesView()
+    {
+        initComponents();
 		
-		final JPanel panel = new JPanel();
-		panel.setBackground(Color.LIGHT_GRAY);
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "DOCUMENTO DE IDENTIDAD", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(255, 0, 0)));
-		panel.setBounds(35, 12, 1232, 90);
-		getContentPane().add(panel);
-		panel.setLayout(null);
-		
-		JLabel lblNumeroDeDocumento = new JLabel("NUMERO DE DOCUMENTO");
-		lblNumeroDeDocumento.setBounds(12, 37, 183, 17);
-		panel.add(lblNumeroDeDocumento);
-		lblNumeroDeDocumento.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		txtIdentidad = new JTextField();
-		txtIdentidad.setBounds(213, 32, 197, 28);
-		panel.add(txtIdentidad);
-		txtIdentidad.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtIdentidad.setColumns(10);
-		
-		final JComboBox comboOpcionBusqueda = new JComboBox();
-		comboOpcionBusqueda.setModel(new DefaultComboBoxModel(new String[] {"SELECCIONE UNA BUSQUEDA", "CEDULA", "CARNET"}));
-		comboOpcionBusqueda.setBounds(628, 30, 233, 30);
-		panel.add(comboOpcionBusqueda);
+        InterfazGrafica.CambiarEstadoElem(jPanel3, false);
+	//InterfazGrafica.CambiarEstadoElem(jPanel4, false);
+	InterfazGrafica.CambiarEstadoElem(jPanel5, false);
+		                
+    }
 
-		
-		JLabel lblTipoDeDocumento = new JLabel("BUSQUEDA POR");
-		lblTipoDeDocumento.setBounds(457, 37, 153, 17);
-		panel.add(lblTipoDeDocumento);
-		lblTipoDeDocumento.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		
-		final JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.LIGHT_GRAY);
-		panel_1.setBorder(new TitledBorder(null, "DATOS PERSONALES", TitledBorder.CENTER, TitledBorder.TOP, null, Color.RED));
-		panel_1.setBounds(35, 114, 1232, 155);
-		getContentPane().add(panel_1);
-		panel_1.setLayout(null);
-		
-		JLabel label_7 = new JLabel("PRIMER NOMBRE");
-		label_7.setBounds(10, 42, 146, 17);
-		panel_1.add(label_7);
-		label_7.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		txtPrimerNom = new JTextField();
-		txtPrimerNom.setBounds(217, 37, 197, 28);
-		panel_1.add(txtPrimerNom);
-		txtPrimerNom.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtPrimerNom.setColumns(10);
-		
-		JLabel label = new JLabel("SEGUNDO NOMBRE");
-		label.setBounds(456, 40, 146, 17);
-		panel_1.add(label);
-		label.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		txtSegunNom = new JTextField();
-		txtSegunNom.setBounds(629, 35, 197, 28);
-		panel_1.add(txtSegunNom);
-		txtSegunNom.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtSegunNom.setColumns(10);
-		
-		JLabel label_1 = new JLabel("PRIMER APELLIDO");
-		label_1.setBounds(838, 42, 146, 17);
-		panel_1.add(label_1);
-		label_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		txtPrimerApe = new JTextField();
-		txtPrimerApe.setBounds(1002, 37, 197, 28);
-		panel_1.add(txtPrimerApe);
-		txtPrimerApe.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtPrimerApe.setColumns(10);
-		
-		txtSegundoApe = new JTextField();
-		txtSegundoApe.setBounds(217, 68, 197, 28);
-		panel_1.add(txtSegundoApe);
-		txtSegundoApe.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtSegundoApe.setColumns(10);
-		
-		JLabel label_2 = new JLabel("SEGUNDO APELLIDO");
-		label_2.setBounds(10, 73, 146, 17);
-		panel_1.add(label_2);
-		label_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		JLabel label_3 = new JLabel("FECHA DE NACIMIENTO");
-		label_3.setBounds(456, 73, 160, 17);
-		panel_1.add(label_3);
-		label_3.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		JLabel label_4 = new JLabel("ESTADO CIVIL");
-		label_4.setBounds(10, 109, 146, 17);
-		panel_1.add(label_4);
-		label_4.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		final JComboBox comboEstadoCivil = new JComboBox();
-		comboEstadoCivil.setBounds(217, 102, 197, 30);
-		panel_1.add(comboEstadoCivil);
-		
-		JLabel label_5 = new JLabel("OCUPACION");
-		label_5.setBounds(456, 109, 146, 17);
-		panel_1.add(label_5);
-		label_5.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		txtOcupacion = new JTextField();
-		txtOcupacion.setBounds(629, 102, 197, 28);
-		panel_1.add(txtOcupacion);
-		txtOcupacion.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtOcupacion.setColumns(10);
-		
-		JLabel lblCelular = new JLabel("CELULAR");
-		lblCelular.setFont(new Font("Dialog", Font.PLAIN, 14));
-		lblCelular.setBounds(838, 76, 146, 17);
-		panel_1.add(lblCelular);
-		
-		txtCelular = new JTextField();
-		txtCelular.setFont(new Font("Dialog", Font.PLAIN, 14));
-		txtCelular.setColumns(10);
-		txtCelular.setBounds(1002, 71, 197, 28);
-		panel_1.add(txtCelular);
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-		final JComboBox comboSexo = new JComboBox();
-		comboSexo.setModel(new DefaultComboBoxModel(new String[] {"SELECCIONE UNA OPCION", "FEMENINO", "MASCULINO"}));
-		comboSexo.setBounds(1002, 102, 197, 30);
-		panel_1.add(comboSexo);
-		
-		JLabel lblSexo = new JLabel("SEXO");
-		lblSexo.setFont(new Font("Dialog", Font.PLAIN, 14));
-		lblSexo.setBounds(838, 109, 146, 17);
-		panel_1.add(lblSexo);
-		
-		
-		InterfazGrafica.CambiarEstadoElem(panel_1,false);
-		
-		
-		final JDateChooser dateChFechaNac = new JDateChooser();
-		dateChFechaNac.setDateFormatString("yyyy/MM/dd");
-		dateChFechaNac.setBounds(629, 68, 197, 28);
-		dateChFechaNac.setEnabled(false);
-		panel_1.add(dateChFechaNac);
-		
-		final JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.LIGHT_GRAY);
-		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "DATOS DEL LUMISIAL", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(255, 0, 0)));
-		panel_2.setBounds(35, 281, 1232, 216);
-		getContentPane().add(panel_2);
-		panel_2.setLayout(null);
-		
-		JLabel lblLumisial = new JLabel("PAIS");
-		lblLumisial.setBounds(451, 73, 57, 17);
-		panel_2.add(lblLumisial);
-		lblLumisial.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		final JComboBox comboLumisial = new JComboBox();
-		comboLumisial.setBounds(620, 150, 197, 30);
-		panel_2.add(comboLumisial);
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        btnBuscar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        txtIdentidad = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        comboOpcionBusqueda = new javax.swing.JComboBox();
+        jPanel3 = new javax.swing.JPanel();
+        txtSegunNom = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtPrimerNom = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtCelular = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        txtSegundoApe = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        dateChFechaNac = new com.toedter.calendar.JDateChooser();
+        jLabel12 = new javax.swing.JLabel();
+        txtPrimerApe = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        comboEstadoCivil = new javax.swing.JComboBox();
+        jLabel14 = new javax.swing.JLabel();
+        txtOcupacion = new javax.swing.JTextField();
+        comboSexo = new javax.swing.JComboBox();
+        jLabel15 = new javax.swing.JLabel();
+        btnGuardar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        chckbxJuntaSacer = new javax.swing.JCheckBox();
+        chckbxJuntaAdmin = new javax.swing.JCheckBox();
+        chckbxJuven = new javax.swing.JCheckBox();
+        chckbxJuntaDam = new javax.swing.JCheckBox();
+        chckbxCoro = new javax.swing.JCheckBox();
+        chckbxTercera = new javax.swing.JCheckBox();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        comboPaisCod = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
+        comboDiocesisCod = new javax.swing.JComboBox();
+        jLabel17 = new javax.swing.JLabel();
+        comboCiudadCod = new javax.swing.JComboBox();
+        txtNumCarnet = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel20 = new javax.swing.JLabel();
+        comboLumisialCod = new javax.swing.JComboBox();
 
-		
-		final JComboBox comboDiocesis = new JComboBox();
-		comboDiocesis.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				
-				DiocesisModel objDiocesisModel = (DiocesisModel)comboDiocesis.getSelectedItem();
-				
-				if(objDiocesisModel != null){
-					
-					int diocesisCod = objDiocesisModel.getDiocesisCod();
-					
-					DefaultComboBoxModel comboLumisialModel = new DefaultComboBoxModel(objIntegrantesController.loadDataLumisialCombo(diocesisCod));
-					comboLumisial.setModel(comboLumisialModel);	
-					
-				}
-				
-			}
-		});
-		comboDiocesis.setBounds(620, 108, 197, 30);
-		panel_2.add(comboDiocesis);
-		
-		final JComboBox comboPais = new JComboBox();
-		comboPais.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				comboDiocesis.removeAllItems();
-				comboLumisial.removeAllItems();
-				
-				PaisModel objPaisModel = (PaisModel)comboPais.getSelectedItem();
-				int paisCod = objPaisModel.getPaisCod();
-				
-				
-				LumisialController objLumisialController = new LumisialController();
-				DefaultComboBoxModel comboDiocesisModel = new DefaultComboBoxModel(objLumisialController.loadDataDiocesisCombo(paisCod));
-				comboDiocesis.setModel(comboDiocesisModel);
-				
-			}
-		});
-		comboPais.setBounds(620, 66, 197, 30);
-		panel_2.add(comboPais);
-		
-		final JPanel panel_3 = new JPanel();
-		panel_3.setBackground(Color.LIGHT_GRAY);
-		panel_3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "PERTENECE A:", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 255)));
-		panel_3.setBounds(12, 29, 421, 146);
-		panel_2.add(panel_3);
-		panel_3.setLayout(null);
-		
-		final JCheckBox chckbxJuntaSacer = new JCheckBox("JUNTA SACERDOTAL");
-		chckbxJuntaSacer.setBackground(Color.LIGHT_GRAY);
-		chckbxJuntaSacer.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		chckbxJuntaSacer.setBounds(6, 31, 164, 25);
-		panel_3.add(chckbxJuntaSacer);
-		
-		final JCheckBox chckbxCatequista = new JCheckBox("CATEQUISTA");
-		chckbxCatequista.setBackground(Color.LIGHT_GRAY);
-		chckbxCatequista.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		chckbxCatequista.setBounds(203, 31, 113, 25);
-		panel_3.add(chckbxCatequista);
-		
-		final JCheckBox chckbxJuntaAdmin = new JCheckBox("JUNTA ADMINISTRATIVA");
-		chckbxJuntaAdmin.setBackground(Color.LIGHT_GRAY);
-		chckbxJuntaAdmin.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		chckbxJuntaAdmin.setBounds(4, 86, 185, 25);
-		panel_3.add(chckbxJuntaAdmin);
-		
-		final JCheckBox chckbxJuntaDam = new JCheckBox("JUNTA DE DE DAMAS");
-		chckbxJuntaDam.setBackground(Color.LIGHT_GRAY);
-		chckbxJuntaDam.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		chckbxJuntaDam.setBounds(6, 58, 168, 25);
-		panel_3.add(chckbxJuntaDam);
-		
-		final JCheckBox chckbxCatorceno = new JCheckBox("CATORCENO");
-		chckbxCatorceno.setBackground(Color.LIGHT_GRAY);
-		chckbxCatorceno.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		chckbxCatorceno.setBounds(203, 87, 114, 25);
-		panel_3.add(chckbxCatorceno);
-		
-		final JCheckBox chckbxJuntaAdministrativaDepartamental = new JCheckBox("JUNTA ADMINISTRATIVA DEPARTAMENTAL");
-		chckbxJuntaAdministrativaDepartamental.setBackground(Color.LIGHT_GRAY);
-		chckbxJuntaAdministrativaDepartamental.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		chckbxJuntaAdministrativaDepartamental.setBounds(6, 114, 311, 25);
-		panel_3.add(chckbxJuntaAdministrativaDepartamental);
-		
-		final JCheckBox chckbxCoro = new JCheckBox("CORO");
-		chckbxCoro.setBounds(203, 60, 106, 24);
-		panel_3.add(chckbxCoro);
-		chckbxCoro.setBackground(Color.LIGHT_GRAY);
-		chckbxCoro.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		JLabel lblObservaciones = new JLabel("OBSERVACIONES");
-		lblObservaciones.setBounds(831, 37, 130, 17);
-		panel_2.add(lblObservaciones);
-		lblObservaciones.setFont(new Font("Tahoma", Font.BOLD, 14));
-		
-		JLabel lblNumeroDeCarnet = new JLabel("NUMERO DE CARNET");
-		lblNumeroDeCarnet.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNumeroDeCarnet.setBounds(451, 37, 147, 17);
-		panel_2.add(lblNumeroDeCarnet);
-		
-		txtNumCarnet = new JTextField();
-		txtNumCarnet.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtNumCarnet.setColumns(10);
-		txtNumCarnet.setBounds(620, 32, 197, 28);
-		panel_2.add(txtNumCarnet);
-		
-		JLabel label_6 = new JLabel("LUMISIAL");
-		label_6.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		label_6.setBounds(451, 157, 60, 17);
-		panel_2.add(label_6);
-		
-		JLabel lblDiocesis = new JLabel("DIOCESIS");
-		lblDiocesis.setBounds(451, 115, 81, 17);
-		panel_2.add(lblDiocesis);
-		lblDiocesis.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
-		final JTextArea textAObjservaciones = new JTextArea();
-		textAObjservaciones.setBounds(979, 29, 241, 146);
-		panel_2.add(textAObjservaciones);
-		InterfazGrafica.CambiarEstadoElem(panel_2, false);
-		InterfazGrafica.CambiarEstadoElem(panel_3, false);
-		
-		final JButton btnGuardar = new JButton("GUARDAR");
-		btnGuardar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				
-				String getidentidad	= txtIdentidad.getText();
-				int identidad		= Integer.parseInt(getidentidad);
-				
-				String primerNom	= txtPrimerNom.getText();
-				String segundoNom	= txtSegunNom.getText();
-				String primerApe	= txtPrimerApe.getText();
-				String segundoApe	= txtSegundoApe.getText();
-				String ocupacion	= txtOcupacion.getText();
-				
-				String getCelular	= txtCelular.getText();
-				
-				int celular = 0;
-				if(!getCelular.equals("")){
-					celular			= Integer.parseInt(getCelular);
-				}
-				
-				String getCarnet	= txtNumCarnet.getText();
-				int carnet = 0;
-				if(!getCarnet.equals("")){
-					carnet			= Integer.parseInt(getCarnet);
-					
-				}
-							
-				//String estadoCivil = (String) comboEstadoCivil.getSelectedItem();
-				EstadoCivilModel objEstadoCivilModel = (EstadoCivilModel) comboEstadoCivil.getSelectedItem();
-				String estadoCivil = objEstadoCivilModel.getEstadoCivilCod();
-				
-				String observaciones = textAObjservaciones.getText(); 
-				String cargos = InterfazGrafica.cargos(panel_3);
-				String sexo = objIntegrantesController.sexo(comboSexo); 
-				Blob getBlob = null;
-				
-				int lumisialCod = 0;
-				LumisialModel objLumisial= (LumisialModel) comboLumisial.getSelectedItem();
-				if(objLumisial != null){
-					lumisialCod = objLumisial.getLumisialCode();
-				}
-				
-				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-				Date getfechaNac = dateChFechaNac.getDate();
-				String fechaNac = dateFormat.format(getfechaNac);
-				
-				
-				Retorno objRetorno = objIntegrantesController.registrarIntegrante(identidad,carnet, primerNom, segundoNom, primerApe, segundoApe,ocupacion,celular, sexo, estadoCivil, fechaNac, getBlob, cargos, observaciones, lumisialCod);
-				
-				if(!objRetorno.isError()){
-					
-					if(objRetorno.isEncoRgis()){
-						
-						JOptionPane.showMessageDialog(null, "SE HA REGISTRADO EN LA BASE DE DATOS");
-						
-						InterfazGrafica.setNullElements(panel);
-						InterfazGrafica.setNullElements(panel_1);
-						InterfazGrafica.setNullElements(panel_2);
-						InterfazGrafica.setNullElements(panel_3);
-						
-						InterfazGrafica.CambiarEstadoElem(panel_1, false);
-						InterfazGrafica.CambiarEstadoElem(panel_2, false);
-						InterfazGrafica.CambiarEstadoElem(panel_3, false);
-						
-					}
-				}else{
-					JOptionPane.showMessageDialog(null, objRetorno.getErrorMsg());
-				}
-			}
-		});
-		btnGuardar.setEnabled(false);
-		btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnGuardar.setBounds(454, 509, 137, 34);
-		getContentPane().add(btnGuardar);
-		
-		final JButton btnCancelar = new JButton("CANCELAR");
-		btnCancelar.setEnabled(false);
-		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnCancelar.setBounds(650, 509, 137, 34);
-		getContentPane().add(btnCancelar);
-		
-		JButton btnConsultar = new JButton("CONSULTAR");
-		btnConsultar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				String getIdentidad = txtIdentidad.getText();
-				int identidad = Integer.parseInt(getIdentidad);
-				
-				int opcionBusqueda = comboOpcionBusqueda.getSelectedIndex();
-				if(opcionBusqueda != 0){
-					
-					Retorno objRetorno = objIntegrantesController.buscarIntegrante(identidad, opcionBusqueda);
-					
-					if(!objRetorno.isError()){
-						
-						if(objRetorno.isEncoRgis()){
-							
-							int pregunta = JOptionPane.showConfirmDialog(null, "LA PERSONA ESTA REGISTRADA , ¿DESEA VER LOS DATOS?");
-							
-							if(pregunta == 0){
-								
-								IntegrantesModel objIntegrantesModel= objIntegrantesController.loadDataForm(identidad);
-								
-								//para mostrar informacion en el formulario
-								if(objIntegrantesModel != null){
-									
-									txtPrimerNom.setText(objIntegrantesModel.getNombre1());
-									txtSegunNom.setText(objIntegrantesModel.getNombre2());
-									txtPrimerApe.setText(objIntegrantesModel.getApellido1());
-									txtSegundoApe.setText(objIntegrantesModel.getApellido2());
-									txtCelular.setText(Integer.toString(objIntegrantesModel.getCelular()));
-									txtNumCarnet.setText(Integer.toString(objIntegrantesModel.getCarnet()));
-									txtOcupacion.setText(objIntegrantesModel.getOcupacion());
-									
-									//DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-									//Date getfechaNac = dateChFechaNac.setDate();
-									//String fechaNac = dateFormat.format(getfechaNac);
-									
-									
-									String getGenero = objIntegrantesModel.getGenero();
-									
-									if(getGenero == "F"){
-										comboSexo.setSelectedIndex(1);
-										
-									}else{
-										comboSexo.setSelectedIndex(2);
-									}
-									
-								}
-							}
-							
-						}else{
-							
-							int pregunta = JOptionPane.showConfirmDialog(null, "LA PERSONA NO ESTA EN LA BASE DE DATOS , ¿DESEA REGISTRARLO?");
-							
-							if(pregunta == 0){
-								
-								InterfazGrafica.CambiarEstadoElem(panel_1, true);
-								InterfazGrafica.CambiarEstadoElem(panel_2, true);
-								InterfazGrafica.CambiarEstadoElem(panel_3, true);
-								
-								btnGuardar.setEnabled(true);
-								btnCancelar.setEnabled(true);
-								
-								DiocesisController objDiocesisController = new DiocesisController();
-								DefaultComboBoxModel comboPaisModel = new DefaultComboBoxModel(objDiocesisController.loadDataCombo());
-								comboPais.setModel(comboPaisModel);
-								
-								DefaultComboBoxModel comboEstadoCivilModel= new DefaultComboBoxModel(objIntegrantesController.loadDataEstadoCivilCombo()) ;
-								comboEstadoCivil.setModel(comboEstadoCivilModel);
-							}
-							
-						}
-						
-					}else{
-						JOptionPane.showMessageDialog(null, objRetorno.getErrorMsg());
-					}
-					
-				}
-			}
-					
-								
-				
-		});
-		btnConsultar.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnConsultar.setBounds(906, 28, 137, 34);
-		panel.add(btnConsultar);		
+        setClosable(true);
 
-	}
+        jPanel1.setBackground(new java.awt.Color(72, 113, 214));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+
+        jPanel2.setBackground(new java.awt.Color(102, 138, 229));
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+
+        btnBuscar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/search.png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Numero de documento");
+
+        txtIdentidad.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtIdentidad.setForeground(new java.awt.Color(0, 0, 0));
+        txtIdentidad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("Busqueda por");
+
+        comboOpcionBusqueda.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        comboOpcionBusqueda.setForeground(new java.awt.Color(0, 0, 0));
+        comboOpcionBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione una opcion", "cedula", "carnet" }));
+        comboOpcionBusqueda.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        comboOpcionBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboOpcionBusquedaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtIdentidad, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboOpcionBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdentidad, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(comboOpcionBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBackground(new java.awt.Color(102, 138, 229));
+        jPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        jPanel3.setEnabled(false);
+
+        txtSegunNom.setEditable(false);
+        txtSegunNom.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtSegunNom.setForeground(new java.awt.Color(0, 0, 0));
+        txtSegunNom.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("primer nombre");
+
+        jLabel8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel8.setText("segundo nombre");
+
+        txtPrimerNom.setEditable(false);
+        txtPrimerNom.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtPrimerNom.setForeground(new java.awt.Color(0, 0, 0));
+        txtPrimerNom.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel9.setText("Primer apellido");
+
+        txtCelular.setEditable(false);
+        txtCelular.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtCelular.setForeground(new java.awt.Color(0, 0, 0));
+        txtCelular.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        jLabel10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel10.setText("segundo apellido");
+
+        txtSegundoApe.setEditable(false);
+        txtSegundoApe.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtSegundoApe.setForeground(new java.awt.Color(0, 0, 0));
+        txtSegundoApe.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        jLabel11.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel11.setText("cumpleaños");
+
+        dateChFechaNac.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        jLabel12.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel12.setText("celular");
+
+        txtPrimerApe.setEditable(false);
+        txtPrimerApe.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtPrimerApe.setForeground(new java.awt.Color(0, 0, 0));
+        txtPrimerApe.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        jLabel13.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel13.setText("Estado civil");
+
+        comboEstadoCivil.setForeground(new java.awt.Color(0, 0, 0));
+        comboEstadoCivil.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        comboEstadoCivil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboEstadoCivilActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel14.setText("Ocupacion");
+
+        txtOcupacion.setEditable(false);
+        txtOcupacion.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtOcupacion.setForeground(new java.awt.Color(0, 0, 0));
+        txtOcupacion.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        comboSexo.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        comboSexo.setForeground(new java.awt.Color(0, 0, 0));
+        comboSexo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione una opcion", "Femenino", "Masculino" }));
+        comboSexo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        comboSexo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboSexoActionPerformed(evt);
+            }
+        });
+
+        jLabel15.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel15.setText("Genero");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(255, 255, 255)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel14))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dateChFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSegunNom, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtOcupacion, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel13)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboEstadoCivil, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtPrimerNom, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtSegundoApe, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtCelular)
+                    .addComponent(txtPrimerApe)
+                    .addComponent(comboSexo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtSegunNom, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8)
+                        .addComponent(txtPrimerNom, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9)
+                        .addComponent(txtPrimerApe, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtSegundoApe, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel10)
+                        .addComponent(jLabel11))
+                    .addComponent(dateChFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel12)
+                        .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(comboEstadoCivil, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel13))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtOcupacion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel14)
+                        .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel15)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btnGuardar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
+        btnGuardar.setText("guardar");
+        btnGuardar.setToolTipText("Guardar");
+        btnGuardar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        btnGuardar.setEnabled(false);
+        btnGuardar.setMaximumSize(new java.awt.Dimension(100, 36));
+        btnGuardar.setMinimumSize(new java.awt.Dimension(100, 36));
+        btnGuardar.setPreferredSize(new java.awt.Dimension(100, 36));
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cancel.png"))); // NOI18N
+        btnCancelar.setText("cancelar");
+        btnCancelar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        btnCancelar.setEnabled(false);
+
+        jPanel4.setBackground(new java.awt.Color(102, 138, 229));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true), "Pertenece a"));
+        jPanel4.setEnabled(false);
+
+        chckbxJuntaSacer.setBackground(new java.awt.Color(102, 138, 229));
+        chckbxJuntaSacer.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        chckbxJuntaSacer.setForeground(new java.awt.Color(0, 0, 0));
+        chckbxJuntaSacer.setText("Junta sacerdotal");
+
+        chckbxJuntaAdmin.setBackground(new java.awt.Color(102, 138, 229));
+        chckbxJuntaAdmin.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        chckbxJuntaAdmin.setForeground(new java.awt.Color(0, 0, 0));
+        chckbxJuntaAdmin.setText("Junta administrativa");
+
+        chckbxJuven.setBackground(new java.awt.Color(102, 138, 229));
+        chckbxJuven.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        chckbxJuven.setForeground(new java.awt.Color(0, 0, 0));
+        chckbxJuven.setText("comite de Juventudes");
+
+        chckbxJuntaDam.setBackground(new java.awt.Color(102, 138, 229));
+        chckbxJuntaDam.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        chckbxJuntaDam.setForeground(new java.awt.Color(0, 0, 0));
+        chckbxJuntaDam.setText("Comite de damas");
+
+        chckbxCoro.setBackground(new java.awt.Color(102, 138, 229));
+        chckbxCoro.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        chckbxCoro.setForeground(new java.awt.Color(0, 0, 0));
+        chckbxCoro.setText("Coro");
+
+        chckbxTercera.setBackground(new java.awt.Color(102, 138, 229));
+        chckbxTercera.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        chckbxTercera.setForeground(new java.awt.Color(0, 0, 0));
+        chckbxTercera.setText("Tercera camara");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chckbxJuntaSacer)
+                    .addComponent(chckbxJuntaAdmin)
+                    .addComponent(chckbxJuven)
+                    .addComponent(chckbxJuntaDam)
+                    .addComponent(chckbxCoro)
+                    .addComponent(chckbxTercera))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(chckbxJuntaSacer)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chckbxJuntaAdmin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chckbxJuven)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chckbxJuntaDam)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chckbxCoro)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chckbxTercera)
+                .addGap(0, 45, Short.MAX_VALUE))
+        );
+
+        jPanel5.setBackground(new java.awt.Color(102, 138, 229));
+        jPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        jPanel5.setEnabled(false);
+
+        jLabel16.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel16.setText("Pais");
+
+        comboPaisCod.setForeground(new java.awt.Color(0, 0, 0));
+        comboPaisCod.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        comboPaisCod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboPaisCodActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setText("Diocesis");
+
+        comboDiocesisCod.setForeground(new java.awt.Color(0, 0, 0));
+        comboDiocesisCod.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        comboDiocesisCod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboDiocesisCodActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel17.setText("Ciudad");
+
+        comboCiudadCod.setForeground(new java.awt.Color(0, 0, 0));
+        comboCiudadCod.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        txtNumCarnet.setEditable(false);
+        txtNumCarnet.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtNumCarnet.setForeground(new java.awt.Color(0, 0, 0));
+        txtNumCarnet.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        jLabel18.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel18.setText("Carnet N°");
+
+        jLabel19.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel19.setText("Observaciones");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel20.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel20.setText("Lumisial");
+
+        comboLumisialCod.setForeground(new java.awt.Color(0, 0, 0));
+        comboLumisialCod.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboDiocesisCod, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboCiudadCod, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel18))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(comboPaisCod, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtNumCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel20)
+                        .addGap(18, 18, 18)
+                        .addComponent(comboLumisialCod, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel19)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtNumCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel19))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(comboPaisCod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(comboDiocesisCod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(comboCiudadCod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(comboLumisialCod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel20))))
+                .addGap(72, 72, 72))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(180, 180, 180)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(351, 351, 351))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 257, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(321, 321, 321))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 648, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
+        String getIdentidad = txtIdentidad.getText();
+        int identidad = Integer.parseInt(getIdentidad);
+
+        int opcionBusqueda = comboOpcionBusqueda.getSelectedIndex();
+        if(opcionBusqueda != 0)
+        {
+            Retorno objRetorno = objIntegrantesController.buscarIntegrante(identidad, opcionBusqueda);
+
+            if(!objRetorno.isError())
+            {
+                if(objRetorno.isEncoRgis())
+                {
+                    int pregunta = JOptionPane.showConfirmDialog(null, "LA PERSONA ESTA REGISTRADA , ¿DESEA VER LOS DATOS?");
+
+                    if(pregunta == 0)
+                    {
+                        IntegrantesModel objIntegrantesModel= objIntegrantesController.loadDataForm(identidad);
+
+                        //para mostrar informacion en el formulario
+                        if(objIntegrantesModel != null){
+
+                            txtPrimerNom.setText(objIntegrantesModel.getNombre1());
+                            txtSegunNom.setText(objIntegrantesModel.getNombre2());
+                            txtPrimerApe.setText(objIntegrantesModel.getApellido1());
+                            txtSegundoApe.setText(objIntegrantesModel.getApellido2());
+                            txtCelular.setText(Integer.toString(objIntegrantesModel.getCelular()));
+                            txtNumCarnet.setText(Integer.toString(objIntegrantesModel.getCarnet()));
+                            txtOcupacion.setText(objIntegrantesModel.getOcupacion());
+
+                            String getGenero = objIntegrantesModel.getGenero();
+
+                            if(getGenero == "F"){
+                                    comboSexo.setSelectedIndex(1);
+
+                            }else{
+                                    comboSexo.setSelectedIndex(2);
+                            }
+                            
+                            Component[] elementos = jPanel4.getComponents();
+                            String[] cargos = objIntegrantesModel.getCargos();
+                            for(int ixCargos = 0; ixCargos<cargos.length; ixCargos++)
+                            {
+                                String cargo = cargos[ixCargos];
+                                
+                                for(int ixElemen = 0; ixElemen< elementos.length; ixElemen ++)
+                                {
+                                    
+                                    if(elementos[ixElemen] instanceof JCheckBox)
+                                    {
+                                        JCheckBox elemento = (JCheckBox) elementos[ixElemen];
+                                        System.out.println(elemento.getText());
+                                        if(cargo.equals(elemento.getText()))
+                                        {
+                                            elemento.setSelected(true);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }else{
+
+                    int pregunta = JOptionPane.showConfirmDialog(null, "LA PERSONA NO ESTA EN LA BASE DE DATOS , ¿DESEA REGISTRARLO?");
+
+                    if(pregunta == 0)
+                    {
+                        InterfazGrafica.CambiarEstadoElem(jPanel3, true);
+                        InterfazGrafica.CambiarEstadoElem(jPanel4, true);
+                        InterfazGrafica.CambiarEstadoElem(jPanel5, true);
+
+                        btnGuardar.setEnabled(true);
+                        btnCancelar.setEnabled(true);
+
+                        DiocesisController objDiocesisController = new DiocesisController();
+                        DefaultComboBoxModel comboPaisModel = new DefaultComboBoxModel(objDiocesisController.loadDataCombo());
+                        comboPaisCod.setModel(comboPaisModel);
+
+                        DefaultComboBoxModel comboEstadoCivilModel= new DefaultComboBoxModel(objIntegrantesController.loadDataEstadoCivilCombo()) ;
+                        comboEstadoCivil.setModel(comboEstadoCivilModel);
+                    }
+
+                }
+
+            }else{
+                JOptionPane.showMessageDialog(null, objRetorno.getErrorMsg());
+            }
+
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+
+       
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void comboEstadoCivilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboEstadoCivilActionPerformed
+
+
+    }//GEN-LAST:event_comboEstadoCivilActionPerformed
+
+    private void comboSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSexoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboSexoActionPerformed
+
+    private void comboPaisCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPaisCodActionPerformed
+
+        PaisModel objPaisModel = (PaisModel) comboPaisCod.getSelectedItem();
+        int paisCod = objPaisModel.getPaisCod();
+
+        comboCiudadCod.removeAllItems();
+        DefaultComboBoxModel comboDiocesisModel = new DefaultComboBoxModel(objLumisialController.loadDataDiocesisCombo(paisCod));
+        comboEstadoCivil.setModel(comboDiocesisModel);
+
+    }//GEN-LAST:event_comboPaisCodActionPerformed
+
+    private void comboDiocesisCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDiocesisCodActionPerformed
+
+        if(recargarCombo)
+        {
+            DiocesisModel objDiocesisModel = (DiocesisModel) comboEstadoCivil.getSelectedItem();
+            int diocesisCod = objDiocesisModel.getDiocesisCod();
+
+            comboCiudadCod.setEnabled(true);
+            DefaultComboBoxModel comboCiudadModel = new DefaultComboBoxModel(objLumisialController.loadDataCiudadCombo(diocesisCod));
+            comboCiudadCod.setModel(comboCiudadModel);
+        }
+
+    }//GEN-LAST:event_comboDiocesisCodActionPerformed
+
+    private void comboOpcionBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboOpcionBusquedaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboOpcionBusquedaActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JCheckBox chckbxCoro;
+    private javax.swing.JCheckBox chckbxJuntaAdmin;
+    private javax.swing.JCheckBox chckbxJuntaDam;
+    private javax.swing.JCheckBox chckbxJuntaSacer;
+    private javax.swing.JCheckBox chckbxJuven;
+    private javax.swing.JCheckBox chckbxTercera;
+    private javax.swing.JComboBox comboCiudadCod;
+    private javax.swing.JComboBox comboDiocesisCod;
+    private javax.swing.JComboBox comboEstadoCivil;
+    private javax.swing.JComboBox comboLumisialCod;
+    private javax.swing.JComboBox comboOpcionBusqueda;
+    private javax.swing.JComboBox comboPaisCod;
+    private javax.swing.JComboBox comboSexo;
+    private com.toedter.calendar.JDateChooser dateChFechaNac;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField txtCelular;
+    private javax.swing.JTextField txtIdentidad;
+    private javax.swing.JTextField txtNumCarnet;
+    private javax.swing.JTextField txtOcupacion;
+    private javax.swing.JTextField txtPrimerApe;
+    private javax.swing.JTextField txtPrimerNom;
+    private javax.swing.JTextField txtSegunNom;
+    private javax.swing.JTextField txtSegundoApe;
+    // End of variables declaration//GEN-END:variables
 }

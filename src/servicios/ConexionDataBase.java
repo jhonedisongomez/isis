@@ -25,7 +25,7 @@ public class ConexionDataBase
     // Contrasena de la base de datos
      
     private  String contrasena= "Colombia2013";
-    private String nombreBaseDatos="diosesis";
+    private String nombreBaseDatos="diocesis";
     
     
     // Metodo encargado de efectuar la conexion

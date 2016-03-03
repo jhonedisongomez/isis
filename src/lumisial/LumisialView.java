@@ -1,300 +1,470 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package lumisial;
-
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import ciudad.CiudadController;
 import ciudad.CiudadModel;
 import diocesis.DiocesisController;
 import diocesis.DiocesisModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import pais.PaisController;
 import pais.PaisModel;
 
-public class LumisialView extends JInternalFrame {
-	private JTextField txtlumisialTel;
-	private JTextField txtLumisialNom;
-	private JTextField txtLumisialDir;
-	private JTextField txtLumisialCod;
+/**
+ *
+ * @author jhon
+ */
+public class LumisialView extends javax.swing.JInternalFrame {
+    
+    CiudadController objCiudadController = new CiudadController();
+    DiocesisController objDiocesisController = new DiocesisController();
+    LumisialController objLumisialController = new LumisialController();
+    PaisController objPaisController = new PaisController();
+    
+    private boolean recargarCombo;
 
-	LumisialController objLumisialController = new LumisialController();
-	DiocesisController objDiocesisController = new DiocesisController();
-	private boolean recargarCombo;
-	
-	/**
-	 * Create the frame.
-	 */
-	public LumisialView() {
-		getContentPane().setBackground(Color.LIGHT_GRAY);
-		setClosable(true);
-		setTitle("REGISTRO DE LUMISIAL");
-		setBounds(100, 100, 393, 399);
-		getContentPane().setLayout(null);
-		
-		JLabel label = new JLabel("CODIGO");
-		label.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		label.setBounds(46, 16, 146, 17);
-		getContentPane().add(label);
-		
-		JLabel label_1 = new JLabel("NOMBRE");
-		label_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		label_1.setBounds(46, 57, 146, 17);
-		getContentPane().add(label_1);
-		
-		JLabel label_2 = new JLabel("DIRECCI\u00D3N");
-		label_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		label_2.setBounds(46, 98, 146, 17);
-		getContentPane().add(label_2);
-		
-		JLabel label_3 = new JLabel("TELEFONO");
-		label_3.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		label_3.setBounds(46, 144, 146, 17);
-		getContentPane().add(label_3);
-		
-		txtlumisialTel = new JTextField();
-		txtlumisialTel.setEditable(false);
-		txtlumisialTel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtlumisialTel.setColumns(10);
-		txtlumisialTel.setBounds(129, 139, 197, 28);
-		getContentPane().add(txtlumisialTel);
-		
-		txtLumisialNom = new JTextField();
-		txtLumisialNom.setEditable(false);
-		txtLumisialNom.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtLumisialNom.setColumns(10);
-		txtLumisialNom.setBounds(129, 52, 197, 28);
-		getContentPane().add(txtLumisialNom);
-		
-		txtLumisialDir = new JTextField();
-		txtLumisialDir.setEditable(false);
-		txtLumisialDir.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtLumisialDir.setColumns(10);
-		txtLumisialDir.setBounds(129, 93, 197, 28);
-		getContentPane().add(txtLumisialDir);
-		
-		final JComboBox comboCiudad = new JComboBox();
-		comboCiudad.setBounds(129, 251, 199, 28);
-		getContentPane().add(comboCiudad);
-		recargarCombo = true;
-		
-		
-		final JComboBox comboDiocesis = new JComboBox();
-		comboDiocesis.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(recargarCombo){
-					//JOptionPane.showMessageDialog(null, "se activo el evento");
-					DiocesisModel objDiocesisModel = (DiocesisModel) comboDiocesis.getSelectedItem();
-					int diocesisCod	= objDiocesisModel.getDiocesisCod();
-					
-					comboCiudad.setEnabled(true);
-					DefaultComboBoxModel comboCiudadModel = new DefaultComboBoxModel(objLumisialController.loadDataCiudadCombo(diocesisCod));
-					comboCiudad.setModel(comboCiudadModel);
-				}
-					
-			}
-		});
-		comboDiocesis.setBounds(129, 211, 199, 28);
-		getContentPane().add(comboDiocesis);
-		
-		
-		final JComboBox ComboPais = new JComboBox();
-		ComboPais.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				PaisModel objPaisModel = (PaisModel) ComboPais.getSelectedItem();
-				int paisCod = objPaisModel.getPaisCod();
-				
-				comboCiudad.removeAllItems();
-				DefaultComboBoxModel comboDiocesisModel = new DefaultComboBoxModel(objLumisialController.loadDataDiocesisCombo(paisCod));
-				comboDiocesis.setModel(comboDiocesisModel);
-			}
-		});
-		ComboPais.setBounds(129, 174, 197, 28);
-		getContentPane().add(ComboPais);
-		
-		
-		final JButton btnCancelar = new JButton("CANCELAR");
-		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnCancelar.setBounds(199, 319, 125, 26);
-		getContentPane().add(btnCancelar);
-		
-		
-		final JButton btnGuardar = new JButton("GUARDAR");
-		btnGuardar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				String getLumisialCod = txtLumisialCod.getText();
-				int lumisialCod = Integer.parseInt(getLumisialCod);
-				
-				String lumisialNom = txtLumisialNom.getText();
-				
-				String getLumisialTel = txtlumisialTel.getText();
-				int lumisialTel = Integer.parseInt(getLumisialTel);
-				
-				String lumisialDir = txtLumisialDir.getText();
-				
-				CiudadModel objCiudadModel = (CiudadModel) comboCiudad.getSelectedItem();
-				int ciudadCod = objCiudadModel.getCiudadCod();
-				
-				boolean registro = objLumisialController.registrarLumisial(lumisialCod, lumisialNom, lumisialTel, lumisialDir, ciudadCod);
-				
-				if(registro){
-					
-					JOptionPane.showMessageDialog(null, "SE HA REGISTRADO EL LUMISIAL EN LA BASE DE DATOS");
-					
-					txtLumisialCod.setText("");
-					txtLumisialNom.setText("");
-					txtlumisialTel.setText("");
-					txtLumisialDir.setText("");
-					
-					//comboDiocesis.setSelectedItem(null);
-					//comboCiudad.setSelectedItem(null);
-					
-					txtLumisialNom.setEnabled(false);
-					txtlumisialTel.setEnabled(false);
-					txtLumisialDir.setEnabled(false);
-					
-					comboCiudad.setEnabled(false);
-					comboDiocesis.setEnabled(false);
-					
-					btnGuardar.setEnabled(false);
-					btnCancelar.setEnabled(false);
-					
-					
-				}
-						
-			}
-		});
-		btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnGuardar.setBounds(72, 319, 111, 26);
-		getContentPane().add(btnGuardar);
-		
-		
-		JButton btnConsultar = new JButton("CONSULTAR");
-		btnConsultar.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				
-				String getLumisialCod = txtLumisialCod.getText();
-				int lumisialCod = Integer.parseInt(getLumisialCod);
-				boolean encontro = objLumisialController.consultarLumisial(lumisialCod);
-				
-				
-				if(encontro){
-					
-					int pregunta = JOptionPane.showConfirmDialog(null, "DESEA VER LA INFORMACION DEL LUMISIAL");
-					if(pregunta == 0){
-						//TODO: rellenar los datos con el lumisial
-						recargarCombo = false;
-						if(txtLumisialNom.isEnabled() && txtLumisialDir.isEnabled() && txtlumisialTel.isEnabled() &&
-								comboDiocesis.isEnabled()){
-								
-								txtLumisialNom.setEditable(false);
-								txtLumisialDir.setEditable(false);
-								txtlumisialTel.setEditable(false); 
-								comboDiocesis.setEditable(false); 
-								comboCiudad.setEditable(false);
-								
-								txtLumisialNom.setText("");
-								txtLumisialDir.setText("");
-								txtlumisialTel.setText("");
-								
-								comboCiudad.removeAllItems();
-								comboDiocesis.removeAllItems();
-								
-								
-						}
-						//comboDiocesis.setSelectedItem(objDiocesisModel);
-						LumisialModel objLumisialModel = objLumisialController.loadDataForm(lumisialCod);
-						
-						txtLumisialNom.setText(objLumisialModel.getLumisialNom());
-						
-						int getLumisialTel = objLumisialModel.getLumisialTel();
-						String lumisialTel = Integer.toString(getLumisialTel);
-						txtlumisialTel.setText(lumisialTel);
-						txtLumisialDir.setText(objLumisialModel.getLumisialDir());
-					
-						CiudadController objCiudadController = new CiudadController();
-						CiudadModel objCiudadModel = objCiudadController.loadDataForm(objLumisialModel.getFk_ciudadCod());
-						comboCiudad.addItem(objCiudadModel);
-						
-						//carga de datos para el combo de diocesesis
-						DiocesisModel objDiocesisModel = objDiocesisController.loadDataForm(objCiudadModel.getFk_diocesisCod());
-						comboDiocesis.addItem(objDiocesisModel);
-					}
-					
-					
-				}else{
-					
-					int pregunta = JOptionPane.showConfirmDialog(null, "EL LUMISIAL NO ESTA EN LA BASE DE DATOS ¿DESEA REGISTRAR EL LUMISIAL EN LA BASE DE DATOS?");
-					if(pregunta ==0){
-						recargarCombo = true;
-						
-						txtLumisialNom.setText("");
-						txtLumisialDir.setText("");
-						txtlumisialTel.setText("");
-						
-						txtLumisialNom.setEditable(true);
-						txtLumisialDir.setEditable(true);
-						txtlumisialTel.setEditable(true);
-						
-						DefaultComboBoxModel comboPaisModel = new DefaultComboBoxModel(objDiocesisController.loadDataCombo());
-						ComboPais.setModel(comboPaisModel);
-						
-				/*		PaisModel objPaisModel = (PaisModel) ComboPais.getSelectedItem();
-						int paisCod = objPaisModel.getPaisCod();
-						DefaultComboBoxModel comboDiocesisModel = new DefaultComboBoxModel(objLumisialController.loadDataDiocesisCombo(paisCod));
-						comboDiocesis.setModel(comboDiocesisModel);*/
-						
-						
-						btnGuardar.setEnabled(true);
-						btnCancelar.setEnabled(true);
-						
-						
-						
-					}//cierre condicion
-				}//cierre else
-				
-				
-			}
-		});
-		btnConsultar.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnConsultar.setBounds(189, 20, 137, 26);
-		getContentPane().add(btnConsultar);
-		
-		txtLumisialCod = new JTextField();
-		txtLumisialCod.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtLumisialCod.setColumns(10);
-		txtLumisialCod.setBounds(131, 16, 48, 28);
-		getContentPane().add(txtLumisialCod);
-		
-		
-		JLabel lblCiudad = new JLabel("DIOCESIS");
-		lblCiudad.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCiudad.setBounds(46, 217, 146, 17);
-		getContentPane().add(lblCiudad);
-		
-		
-		JLabel label_4 = new JLabel("CIUDAD");
-		label_4.setFont(new Font("Dialog", Font.PLAIN, 14));
-		label_4.setBounds(46, 257, 146, 17);
-		getContentPane().add(label_4);
-		
-		JLabel lblPais = new JLabel("PAIS");
-		lblPais.setFont(new Font("Dialog", Font.PLAIN, 14));
-		lblPais.setBounds(46, 180, 146, 17);
-		getContentPane().add(lblPais);
-		
-	}
+    /**
+     * Creates new form LumisialView2
+     */
+    public LumisialView() {
+        initComponents();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        btnBuscar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        txtLumisialCod = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        btnGuardar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        comboPaisCod = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
+        txtLumisialNom = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtLumisialTel = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtLumisialDir = new javax.swing.JTextField();
+        comboDiocesisCod = new javax.swing.JComboBox();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        comboCiudadCod = new javax.swing.JComboBox();
+
+        setClosable(true);
+
+        jPanel1.setBackground(new java.awt.Color(72, 113, 214));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+
+        jPanel2.setBackground(new java.awt.Color(102, 138, 229));
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/search.png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Codigo del lumisial");
+
+        txtLumisialCod.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtLumisialCod.setForeground(new java.awt.Color(0, 0, 0));
+        txtLumisialCod.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(101, 101, 101)
+                .addComponent(jLabel3)
+                .addGap(44, 44, 44)
+                .addComponent(txtLumisialCod, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtLumisialCod, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBackground(new java.awt.Color(102, 138, 229));
+        jPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
+        btnGuardar.setText("guardar");
+        btnGuardar.setToolTipText("Guardar");
+        btnGuardar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        btnGuardar.setEnabled(false);
+        btnGuardar.setMaximumSize(new java.awt.Dimension(100, 36));
+        btnGuardar.setMinimumSize(new java.awt.Dimension(100, 36));
+        btnGuardar.setPreferredSize(new java.awt.Dimension(100, 36));
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cancel.png"))); // NOI18N
+        btnCancelar.setText("cancelar");
+        btnCancelar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        btnCancelar.setEnabled(false);
+
+        comboPaisCod.setForeground(new java.awt.Color(0, 0, 0));
+        comboPaisCod.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        comboPaisCod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboPaisCodActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setText("Diocesis");
+
+        txtLumisialNom.setEditable(false);
+        txtLumisialNom.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtLumisialNom.setForeground(new java.awt.Color(0, 0, 0));
+        txtLumisialNom.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("nombre");
+
+        txtLumisialTel.setEditable(false);
+        txtLumisialTel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtLumisialTel.setForeground(new java.awt.Color(0, 0, 0));
+        txtLumisialTel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("direccion");
+
+        jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel7.setText("telefono");
+
+        txtLumisialDir.setEditable(false);
+        txtLumisialDir.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtLumisialDir.setForeground(new java.awt.Color(0, 0, 0));
+        txtLumisialDir.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        comboDiocesisCod.setForeground(new java.awt.Color(0, 0, 0));
+        comboDiocesisCod.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        comboDiocesisCod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboDiocesisCodActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel9.setText("Pais");
+
+        jLabel10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel10.setText("Ciudad");
+
+        comboCiudadCod.setForeground(new java.awt.Color(0, 0, 0));
+        comboCiudadCod.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel7))
+                .addGap(52, 52, 52)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(txtLumisialTel, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel9))
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(txtLumisialNom, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(52, 52, 52)
+                                    .addComponent(jLabel6))
+                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboPaisCod, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtLumisialDir, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboCiudadCod, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboDiocesisCod, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(83, 83, 83)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(80, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtLumisialNom, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel6)
+                    .addComponent(txtLumisialDir, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtLumisialTel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel9)
+                    .addComponent(comboPaisCod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel5))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(comboDiocesisCod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10)
+                            .addComponent(comboCiudadCod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(29, 29, 29))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
+        String getLumisialCod = txtLumisialCod.getText();
+        int lumisialCod = Integer.parseInt(getLumisialCod);
+        boolean encontro = objLumisialController.consultarLumisial(lumisialCod);
+
+
+        if(encontro){
+
+            int pregunta = JOptionPane.showConfirmDialog(null, "EL LUMSISAL EXISTE EN LA BASE DE DATOS ¿DESEA VER LA INFORMACION DEL LUMISIAL?");
+            if(pregunta == 0)
+            {
+                //TODO: rellenar los datos con el lumisial
+                recargarCombo = false;
+                if(txtLumisialNom.isEnabled() && txtLumisialDir.isEnabled() && txtLumisialCod.isEnabled() &&                    
+                        comboDiocesisCod.isEnabled())
+                {
+
+                    txtLumisialNom.setEditable(false);
+                    txtLumisialDir.setEditable(false);
+                    
+                    comboDiocesisCod.setEditable(false); 
+                    comboCiudadCod.setEditable(false);
+
+                    txtLumisialNom.setText("");
+                    txtLumisialDir.setText("");
+                    txtLumisialTel.setText("");
+
+                    comboCiudadCod.removeAllItems();
+                    comboDiocesisCod.removeAllItems();
+
+
+                }
+                    //comboDiocesis.setSelectedItem(objDiocesisModel);
+                    LumisialModel objLumisialModel = objLumisialController.loadDataForm(lumisialCod);
+
+                    txtLumisialNom.setText(objLumisialModel.getLumisialNom());
+
+                    int getLumisialTel = objLumisialModel.getLumisialTel();
+                    String lumisialTel = Integer.toString(getLumisialTel);
+                    txtLumisialTel.setText(lumisialTel);
+                    txtLumisialDir.setText(objLumisialModel.getLumisialDir());
+                    
+                    CiudadModel objCiudadModel = objCiudadController.loadDataForm(objLumisialModel.getFk_ciudadCod());
+                    comboCiudadCod.addItem(objCiudadModel);
+
+                    //carga de datos para el combo de diocesesis
+                    DiocesisModel objDiocesisModel = objDiocesisController.loadDataForm(objCiudadModel.getFk_diocesisCod());
+                    comboDiocesisCod.addItem(objDiocesisModel);
+                    
+                                        
+                    String objPaisModel = objPaisController.loadDataForm(objDiocesisModel.getFk_paisCod());
+                    comboPaisCod.addItem(objPaisModel);
+            }
+
+        }else
+        {
+            int pregunta = JOptionPane.showConfirmDialog(null, "EL LUMISIAL NO ESTA EN LA BASE DE DATOS ¿DESEA REGISTRAR EL LUMISIAL EN LA BASE DE DATOS?");
+            if(pregunta ==0)
+            {
+                recargarCombo = true;
+
+                txtLumisialNom.setText("");
+                txtLumisialDir.setText("");
+                txtLumisialTel.setText("");
+
+                txtLumisialNom.setEditable(true);
+                txtLumisialDir.setEditable(true);
+                txtLumisialTel.setEditable(true);
+
+                DefaultComboBoxModel comboPaisModel = new DefaultComboBoxModel(objDiocesisController.loadDataCombo());
+                comboPaisCod.setModel(comboPaisModel);
+
+                
+                btnGuardar.setEnabled(true);
+                btnCancelar.setEnabled(true);
+
+            }//cierre condicion
+        }//cierre else
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+
+        String getLumisialCod = txtLumisialCod.getText();
+        int lumisialCod = Integer.parseInt(getLumisialCod);
+
+        String lumisialNom = txtLumisialNom.getText();
+
+        String getLumisialTel = txtLumisialTel.getText();
+        int lumisialTel = Integer.parseInt(getLumisialTel);
+
+        String lumisialDir = txtLumisialDir.getText();
+
+        CiudadModel objCiudadModel = (CiudadModel) comboCiudadCod.getSelectedItem();
+        int ciudadCod = objCiudadModel.getCiudadCod();
+
+        boolean registro = objLumisialController.registrarLumisial(lumisialCod, lumisialNom, lumisialTel, lumisialDir, ciudadCod);
+
+        if(registro)
+        {
+            JOptionPane.showMessageDialog(null, "SE HA REGISTRADO EL LUMISIAL EN LA BASE DE DATOS");
+
+            txtLumisialCod.setText("");
+            txtLumisialNom.setText("");
+            txtLumisialTel.setText("");
+            txtLumisialDir.setText("");
+
+            txtLumisialNom.setEnabled(false);
+            txtLumisialTel.setEnabled(false);
+            txtLumisialDir.setEnabled(false);
+            
+            comboCiudadCod.setSelectedItem(null);
+            comboDiocesisCod.setSelectedItem(null);        
+            comboPaisCod.setSelectedItem(null);
+            
+            btnGuardar.setEnabled(false);
+            btnCancelar.setEnabled(false);
+
+
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void comboPaisCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPaisCodActionPerformed
+       
+        PaisModel objPaisModel = (PaisModel) comboPaisCod.getSelectedItem();
+        int paisCod = objPaisModel.getPaisCod();
+
+        comboCiudadCod.removeAllItems();
+        DefaultComboBoxModel comboDiocesisModel = new DefaultComboBoxModel(objLumisialController.loadDataDiocesisCombo(paisCod));
+        comboDiocesisCod.setModel(comboDiocesisModel);        
+        
+    }//GEN-LAST:event_comboPaisCodActionPerformed
+
+    private void comboDiocesisCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDiocesisCodActionPerformed
+        
+        if(recargarCombo)
+        {
+            DiocesisModel objDiocesisModel = (DiocesisModel) comboDiocesisCod.getSelectedItem();
+            int diocesisCod = objDiocesisModel.getDiocesisCod();
+
+            comboCiudadCod.setEnabled(true);
+            DefaultComboBoxModel comboCiudadModel = new DefaultComboBoxModel(objLumisialController.loadDataCiudadCombo(diocesisCod));
+            comboCiudadCod.setModel(comboCiudadModel);
+        }        
+        
+    }//GEN-LAST:event_comboDiocesisCodActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox comboCiudadCod;
+    private javax.swing.JComboBox comboDiocesisCod;
+    private javax.swing.JComboBox comboPaisCod;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JTextField txtLumisialCod;
+    private javax.swing.JTextField txtLumisialDir;
+    private javax.swing.JTextField txtLumisialNom;
+    private javax.swing.JTextField txtLumisialTel;
+    // End of variables declaration//GEN-END:variables
 }
