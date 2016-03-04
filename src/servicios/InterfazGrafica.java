@@ -9,44 +9,49 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
+import javax.swing.JButton;
 
 public class InterfazGrafica {
 	
-	public static void CambiarEstadoElem(JPanel panel, boolean habilitado){
-		
-		Component[] elementos = panel.getComponents();
-		
-		for(int index = 0; index < elementos.length;index++){
-			
-			
-			if(elementos[index] instanceof JTextField){
-				
-				JTextField getCampo = (JTextField) elementos[index];
-				getCampo.setEditable(habilitado);
-				
-			}else if(elementos[index] instanceof JComboBox){
-				
-				JComboBox getCampo = (JComboBox) elementos[index];
-				getCampo.setEnabled(habilitado);
-				
-			}else if(elementos[index] instanceof JCheckBox){
-				
-				JCheckBox getCampo = (JCheckBox) elementos[index];
-				getCampo.setEnabled(habilitado);
-				
-			}else if(elementos[index] instanceof JTextArea){
-				
-				JTextArea getCampo = (JTextArea) elementos[index];
-				getCampo.setEditable(habilitado);
-				
-			}else if(elementos[index] instanceof JDateChooser){
-				
-				JDateChooser getCampo = (JDateChooser) elementos[index];
-				getCampo.setEnabled(habilitado);
-				
-			}
-		}//close for	
-	}//close function
+    public static void CambiarEstadoElem(JPanel panel, boolean habilitado){
+
+        Component[] elementos = panel.getComponents();
+
+        for(int index = 0; index < elementos.length;index++){
+
+
+            if(elementos[index] instanceof JTextField){
+
+                JTextField getCampo = (JTextField) elementos[index];
+                getCampo.setEditable(habilitado);
+
+            }else if(elementos[index] instanceof JComboBox){
+
+                JComboBox getCampo = (JComboBox) elementos[index];
+                getCampo.setEnabled(habilitado);
+
+            }else if(elementos[index] instanceof JCheckBox){
+
+                JCheckBox getCampo = (JCheckBox) elementos[index];
+                getCampo.setEnabled(habilitado);
+
+            }else if(elementos[index] instanceof JTextArea){
+
+                JTextArea getCampo = (JTextArea) elementos[index];
+                getCampo.setEditable(habilitado);
+
+            }else if(elementos[index] instanceof JDateChooser){
+
+                JDateChooser getCampo = (JDateChooser) elementos[index];
+                getCampo.setEnabled(habilitado);
+
+            }else if(elementos[index] instanceof JButton)
+            {
+                JButton button = (JButton) elementos[index];
+                button.setEnabled(habilitado);
+            }
+        }//close for	
+    }//close function
 
 	
 	public static void setNullElements(JPanel panel){
@@ -89,14 +94,14 @@ public class InterfazGrafica {
 			
 			if(checkBox[index] instanceof JCheckBox){
 				
-				JCheckBox cargo = (JCheckBox) checkBox[index];
-				if(cargo.isSelected()){
-					if(cargos.equals("")){
-						cargos = cargo.getText();
-					}else{
-						cargos = cargos + "," + cargo.getText();
-					}
-				}
+                            JCheckBox cargo = (JCheckBox) checkBox[index];
+                            if(cargo.isSelected()){
+                                    if(cargos.equals("")){
+                                            cargos = cargo.getText();
+                                    }else{
+                                            cargos = cargos + "," + cargo.getText();
+                                    }
+                            }
 				
 			}
 		}

@@ -109,6 +109,7 @@ public class IntegrantesView extends javax.swing.JInternalFrame {
         comboLumisialCod = new javax.swing.JComboBox();
 
         setClosable(true);
+        setTitle("INTEGRANTES");
 
         jPanel1.setBackground(new java.awt.Color(72, 113, 214));
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
